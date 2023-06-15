@@ -1,0 +1,17 @@
+.trans {
+  transform: translateY(25px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.trans-active {
+  transform: translateY(-245px);
+}
+
+.hide {
+  display: none !important;
+}
+
+.add {
+  margin-top: 12px !important;
+  margin-left: 48%;
+}

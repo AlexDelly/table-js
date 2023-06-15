@@ -34,12 +34,12 @@ function createForm() {
   form.setAttribute("novalidate", "");
 
   const formButton = document.createElement("button");
-  formButton.classList.add("btn", "btn-primary");
+  formButton.classList.add("btn", "btn-success");
   formButton.setAttribute("type", "submit");
   formButton.textContent = "Добавить студента";
 
   const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("col-12", "mt-4", "text-end");
+  buttonContainer.classList.add("col-12", "mt-4");
 
   buttonContainer.append(formButton);
 
@@ -82,10 +82,16 @@ function createForm() {
   const row1 = createRow([lastnameInput, firstnameInput, dadInput]);
   const row2 = createRow([dateInput, startInput, facInput]);
 
-  form.append(row1, row2, buttonContainer);
+  const toggleButton = document.createElement("button");
+  toggleButton.classList.add("btn", "btn-outline-secondary", "mt-4", "add");
+  toggleButton.textContent = "+";
+  toggleButton.setAttribute("type", "button");
+
+  form.append(row1, row2, buttonContainer, toggleButton);
 
   return {
     form,
     inputs: [firstname, lastname, dadName, date, start, fac],
+    toggleButton,
   };
 }
