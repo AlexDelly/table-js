@@ -6,7 +6,7 @@ function createRow(args) {
   return row;
 }
 
-function createFormInput(label, validate, type) {
+function createFormInput(label, validate, type = "text") {
   const formInput = document.createElement("div");
   formInput.classList.add("col-md-4", "mb-2");
 
@@ -19,13 +19,25 @@ function createFormInput(label, validate, type) {
   input.setAttribute("required", "");
   input.setAttribute("type", type);
 
+  if (type === "number") {
+    input.setAttribute("min", "2000");
+    input.setAttribute("max", new Date(Date.now()).getFullYear());
+  }
+
+  if (type === "date") {
+    input.setAttribute("min", "1900-01-01");
+    input.setAttribute("max", getCurrentDateString());
+  }
+
+  if (type === "text") input.setAttribute("pattern", `.*[A-Za-z0-9].*`);
+
   const validateField = document.createElement("div");
   validateField.classList.add("invalid-feedback");
   validateField.textContent = validate;
 
   formInput.append(labelField, input, validateField);
 
-  return { formInput, input };
+  return { formInput, input, validateField };
 }
 
 function createForm() {
@@ -45,38 +57,38 @@ function createForm() {
 
   const { formInput: firstnameInput, input: firstname } = createFormInput(
     "Имя",
-    "Пожалуйста введите имя",
-    "text"
+    "Вы не ввели имя"
   );
 
   const { formInput: lastnameInput, input: lastname } = createFormInput(
     "Фамилия",
-    "Пожалуйста введите фамилию",
-    "text"
+    "Вы не ввели фамилию"
   );
 
   const { formInput: dadInput, input: dadName } = createFormInput(
     "Отчество",
-    "Пожалуйста введите отчество",
-    "text"
+    "Вы не ввели отчество"
   );
 
   const { formInput: dateInput, input: date } = createFormInput(
     "Дата рождения",
-    "Пожалуйста укажите дату рождения",
+    "Вы не указали дату рождения",
     "date"
   );
 
-  const { formInput: startInput, input: start } = createFormInput(
+  const {
+    formInput: startInput,
+    input: start,
+    validateField: startValidate,
+  } = createFormInput(
     "Год начала обучения",
-    "Пожалуйста укажите год начала обучения",
+    "Вы не указали год начала обучения",
     "number"
   );
 
-  const { formInput: facInput, input: fac } = createFormInput(
+  const { formInput: facInput, input: facultet } = createFormInput(
     "Факультет",
-    "Пожалуйста укажите факультет",
-    "text"
+    "Вы не указали факультет"
   );
 
   const row1 = createRow([lastnameInput, firstnameInput, dadInput]);
@@ -91,7 +103,8 @@ function createForm() {
 
   return {
     form,
-    inputs: [firstname, lastname, dadName, date, start, fac],
+    inputs: [firstname, lastname, dadName, date, start, facultet],
     toggleButton,
+    startValidate,
   };
 }
