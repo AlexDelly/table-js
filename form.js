@@ -70,11 +70,11 @@ function createForm() {
     "Вы не ввели отчество"
   );
 
-  const { formInput: dateInput, input: date } = createFormInput(
-    "Дата рождения",
-    "Вы не указали дату рождения",
-    "date"
-  );
+  const {
+    formInput: dateInput,
+    input: date,
+    validateField: dateValidate,
+  } = createFormInput("Дата рождения", "Вы не указали дату рождения", "date");
 
   const {
     formInput: startInput,
@@ -106,5 +106,6 @@ function createForm() {
     inputs: [firstname, lastname, dadName, date, start, facultet],
     toggleButton,
     startValidate,
+    dateValidate,
   };
 }

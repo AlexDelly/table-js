@@ -1,5 +1,6 @@
 (() => {
   let IS_VALID_YEAR = false;
+  let IS_VALID_DATE = false;
 
   const container = document.createElement("div");
   container.classList.add("container", "trans", "trans-active");
@@ -22,6 +23,7 @@
     const checkStartYear = (year) => {
       const condition =
         year > 2000 && year <= new Date(Date.now()).getFullYear();
+
       if (!condition) {
         startValidate.textContent = "от 2000г. до текущего";
       }
@@ -29,13 +31,29 @@
       IS_VALID_YEAR = condition;
     };
 
+    const checkDate = (dateValue) => {
+      const currentYear = new Date(dateValue).getFullYear();
+      const condition =
+        currentYear > 1900 && new Date(Date.now()) > new Date(dateValue);
+
+      if (!condition) {
+        dateValidate.textContent = "от 1900г. до текущей даты";
+        form.classList.add("was-validated");
+        date.classList.add("is-invalid");
+      } else {
+        form.classList.remove("was-validated");
+        date.classList.remove("is-invalid");
+      }
+
+      IS_VALID_DATE = condition;
+    };
+
     inputs.forEach((el) =>
       el.addEventListener("input", (e) => checkIfEmpty(e.target.value, el))
     );
 
-    start.addEventListener("input", (e) =>
-      checkStartYear(e.target.value, start)
-    );
+    start.addEventListener("input", (e) => checkStartYear(e.target.value));
+    date.addEventListener("input", (e) => checkDate(e.target.value));
 
     form.addEventListener(
       "submit",
@@ -50,7 +68,7 @@
           .map((el) => el.value.trim() === "")
           .some((el) => el);
 
-        if (allFilled && IS_VALID_YEAR) {
+        if (allFilled && IS_VALID_YEAR && IS_VALID_DATE) {
           e.preventDefault();
           form.classList.remove("was-validated");
           container.classList.toggle("trans-active");
