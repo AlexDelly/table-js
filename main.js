@@ -22,7 +22,7 @@
 
     const checkStartYear = (year) => {
       const condition =
-        year > 2000 && year <= new Date(Date.now()).getFullYear();
+        year > 1999 && year <= new Date(Date.now()).getFullYear();
 
       if (!condition) {
         startValidate.textContent = "от 2000г. до текущего";
