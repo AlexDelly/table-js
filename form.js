@@ -29,7 +29,7 @@ function createFormInput(label, validate, type = "text") {
     input.setAttribute("max", getCurrentDateString());
   }
 
-  if (type === "text") input.setAttribute("pattern", `.*[A-Za-z0-9].*`);
+  if (type === "text") input.setAttribute("pattern", `.*[А-Яа-яA-Za-z0-9].*`);
 
   const validateField = document.createElement("div");
   validateField.classList.add("invalid-feedback");
@@ -41,6 +41,10 @@ function createFormInput(label, validate, type = "text") {
 }
 
 function createForm() {
+  const formTitle = document.createElement("h5");
+  formTitle.classList.add("pb-3");
+  formTitle.textContent = "Добавить студента";
+
   const form = document.createElement("form");
   form.classList.add("col-12", "g-3", "needs-validation", "pt-3");
   form.setAttribute("novalidate", "");
@@ -99,7 +103,7 @@ function createForm() {
   toggleButton.textContent = "+";
   toggleButton.setAttribute("type", "button");
 
-  form.append(row1, row2, buttonContainer, toggleButton);
+  form.append(formTitle, row1, row2, buttonContainer, toggleButton);
 
   return {
     form,

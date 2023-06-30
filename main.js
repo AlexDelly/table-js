@@ -8,11 +8,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.getElementById("root");
 
+    // Add student form
     const { form, inputs, toggleButton, startValidate, dateValidate } =
       createForm();
     const [firstname, lastname, dadName, date, start, facultet] = inputs;
+    //
 
-    container.append(form);
+    // Filter block
+    const { filter, inputs: filterInputs } = createFilter();
+    //
+
+    container.append(form, filter);
     root.append(container);
 
     toggleButton.addEventListener("click", () => {
@@ -48,10 +54,10 @@
       IS_VALID_DATE = condition;
     };
 
+    // Add student events
     inputs.forEach((el) =>
       el.addEventListener("input", (e) => checkIfEmpty(e.target.value, el))
     );
-
     start.addEventListener("input", (e) => checkStartYear(e.target.value));
     date.addEventListener("input", (e) => checkDate(e.target.value));
 
@@ -90,5 +96,14 @@
       },
       false
     );
+    //
+
+    //Filters events
+    filterInputs.forEach((filter) =>
+      filter.addEventListener("input", () =>
+        console.log(filter.value.trim(), filter.dataset.filterType)
+      )
+    );
+    //
   });
 })();
