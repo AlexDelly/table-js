@@ -91,7 +91,7 @@
             fio: getFullName(firstname.value, lastname.value, dadName.value),
             faculty: facultet.value.trim(),
             birthDate: getBirthDate(date.value),
-            startDate: start.value.trim(),
+            startDate: getStudyYears(start.value.trim()),
           };
 
           STUDENTS.push(studentObject);

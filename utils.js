@@ -40,3 +40,16 @@ const getFullYears = (date) => {
 const getBirthDate = (date) => {
   return `${getFormattedDateString(date)} (${getFullYears(date)})`;
 };
+
+const getStudyYears = (startYear) => {
+  let course = "закончил";
+  const currentYear = new Date(Date.now()).getUTCFullYear();
+  const diff = currentYear - startYear;
+  const currentMonth = new Date(Date.now()).getMonth() + 1;
+
+  if (diff <= 4 && currentMonth < 9) {
+    course = `${diff} курс`;
+  }
+
+  return `${startYear} - ${+startYear + 4} (${course})`;
+};
