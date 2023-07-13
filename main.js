@@ -2,6 +2,8 @@
   let IS_VALID_YEAR = false;
   let IS_VALID_DATE = false;
 
+  const STUDENTS = [];
+
   const container = document.createElement("div");
   container.classList.add("container", "trans", "trans-active");
 
@@ -18,7 +20,12 @@
     const { filter, inputs: filterInputs } = createFilter();
     //
 
-    container.append(form, filter);
+    // Table
+    let { studentsTable, updateTable } = createTable(STUDENTS);
+    updateTable();
+    //
+
+    container.append(form, filter, studentsTable);
     root.append(container);
 
     toggleButton.addEventListener("click", () => {
@@ -80,14 +87,15 @@
           container.classList.toggle("trans-active");
           toggleButton.classList.toggle("hide");
 
-          console.log(
-            firstname.value.trim(),
-            lastname.value.trim(),
-            dadName.value.trim(),
-            date.value.trim(),
-            start.value.trim(),
-            facultet.value.trim()
-          );
+          const studentObject = {
+            fio: getFullName(firstname.value, lastname.value, dadName.value),
+            faculty: facultet.value.trim(),
+            birthDate: getBirthDate(date.value),
+            startDate: start.value.trim(),
+          };
+
+          STUDENTS.push(studentObject);
+          updateTable();
 
           inputs.forEach((item) => (item.value = ""));
         }
