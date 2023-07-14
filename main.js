@@ -2,7 +2,33 @@
   let IS_VALID_YEAR = false;
   let IS_VALID_DATE = false;
 
-  const STUDENTS = [];
+  const FILTER_TYPES = {
+    fio: "fio",
+    faculty: "faculty",
+    start: "start",
+    end: "end",
+  };
+
+  const STUDENTS = [
+    {
+      fio: "Иванов Иван Иванович",
+      faculty: "1",
+      birthDate: "16.04.1990 (33 года)",
+      startDate: "2008 - 2012 (закончил)",
+    },
+    {
+      fio: "Петров Петр Петрович",
+      faculty: "2",
+      birthDate: "16.04.1991 (32 года)",
+      startDate: "2013 - 2017 (закончил)",
+    },
+    {
+      fio: "Сидоров Сидр Сидорович",
+      faculty: "3",
+      birthDate: "16.04.1992 (31 год)",
+      startDate: "2022 - 2026 (2 курс)",
+    },
+  ];
 
   const container = document.createElement("div");
   container.classList.add("container", "trans", "trans-active");
@@ -21,8 +47,8 @@
     //
 
     // Table
-    let { studentsTable, updateTable } = createTable(STUDENTS);
-    updateTable();
+    let { studentsTable, updateTable } = createTable();
+    updateTable(STUDENTS);
     //
 
     container.append(form, filter, studentsTable);
@@ -95,7 +121,7 @@
           };
 
           STUDENTS.push(studentObject);
-          updateTable();
+          updateTable(STUDENTS);
 
           inputs.forEach((item) => (item.value = ""));
         }
@@ -106,11 +132,51 @@
     );
     //
 
+    const getFilteredStudents = (students, value, type) => {
+      let filtered = [];
+
+      if (type === FILTER_TYPES.fio && value) {
+        filtered = students.filter(({ fio }) =>
+          fio.toLowerCase().includes(value.toLowerCase())
+        );
+      }
+
+      if (type === FILTER_TYPES.faculty && value) {
+        filtered = students.filter(({ faculty }) => faculty === value);
+      }
+
+      if (type === FILTER_TYPES.faculty && value) {
+        filtered = students.filter(({ faculty }) => faculty === value);
+      }
+
+      if (type === FILTER_TYPES.start && value) {
+        filtered = students.filter(
+          ({ startDate }) => startDate.split(" ")?.[0] === value
+        );
+      }
+
+      if (type === FILTER_TYPES.end && value) {
+        filtered = students.filter(
+          ({ startDate }) => startDate.split(" ")?.[2] === value
+        );
+      }
+
+      updateTable(filtered);
+
+      if (!value) {
+        updateTable(STUDENTS);
+      }
+    };
+
     //Filters events
     filterInputs.forEach((filter) =>
-      filter.addEventListener("input", () =>
-        console.log(filter.value.trim(), filter.dataset.filterType)
-      )
+      filter.addEventListener("input", () => {
+        getFilteredStudents(
+          STUDENTS,
+          filter.value.trim(),
+          filter.dataset.filterType
+        );
+      })
     );
     //
   });

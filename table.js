@@ -34,7 +34,7 @@ function createHeader() {
   return tableHeader;
 }
 
-function createTable(items) {
+function createTable() {
   const table = document.createElement("table");
   table.classList.add("table", "table-bordered");
 
@@ -44,7 +44,7 @@ function createTable(items) {
 
   const tableBody = document.createElement("tbody");
 
-  const updateTable = () => {
+  const updateTable = (items) => {
     tableBody.innerHTML = "";
 
     items.length
