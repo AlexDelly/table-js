@@ -53,3 +53,10 @@ const getStudyYears = (startYear) => {
 
   return `${startYear} - ${+startYear + 4} (${course})`;
 };
+
+const sortString = (a, b) => {
+  const preparedA = a.toString().split(" ").join("").toLowerCase();
+  const preparedB = b.toString().split(" ").join("").toLowerCase();
+
+  return ("" + preparedA).localeCompare(preparedB);
+};

@@ -1,7 +1,9 @@
-function createTh(title, scope) {
+function createTh(title, code, scope) {
   const colTitle = document.createElement("th");
+  colTitle.classList.add("table-head");
   colTitle.setAttribute("scope", scope);
   colTitle.innerText = title;
+  colTitle.setAttribute("data-sort-code", code);
 
   return colTitle;
 }
@@ -26,12 +28,21 @@ function createHeader() {
 
   const trElement = document.createElement("tr");
 
-  ["Ф.И.О.", "Факультет", "Дата рождения и возраст", "Годы обучения"].forEach(
-    (title) => trElement.append(createTh(title, "col"))
-  );
+  const sorters = [];
+
+  [
+    { title: "Ф.И.О.", code: "fioSort" },
+    { title: "Факультет", code: "facSort" },
+    { title: "Дата рождения и возраст", code: "birthSort" },
+    { title: "Годы обучения", code: "yearsSort" },
+  ].forEach((item) => {
+    const sorter = createTh(item.title, item.code, "col");
+    trElement.append(sorter);
+    sorters.push(sorter);
+  });
 
   tableHeader.append(trElement);
-  return tableHeader;
+  return { header: tableHeader, sorters };
 }
 
 function createTable() {
@@ -52,8 +63,8 @@ function createTable() {
       : tableBody.append(noData);
   };
 
-  const header = createHeader();
+  const { header, sorters } = createHeader();
   table.append(header, tableBody);
 
-  return { studentsTable: table, updateTable };
+  return { studentsTable: table, updateTable, sorters };
 }

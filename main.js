@@ -9,10 +9,17 @@
     end: "end",
   };
 
+  const SORT_CODES = {
+    fioSort: "fioSort",
+    facSort: "facSort",
+    birthSort: "birthSort",
+    yearsSort: "yearsSort",
+  };
+
   const STUDENTS = [
     {
       fio: "Иванов Иван Иванович",
-      faculty: "1",
+      faculty: "3",
       birthDate: "16.04.1990 (33 года)",
       startDate: "2008 - 2012 (закончил)",
     },
@@ -24,7 +31,19 @@
     },
     {
       fio: "Сидоров Сидр Сидорович",
-      faculty: "3",
+      faculty: "1",
+      birthDate: "16.04.1992 (31 год)",
+      startDate: "2022 - 2026 (2 курс)",
+    },
+    {
+      fio: "Тестовый Тест Тестович",
+      faculty: "2а",
+      birthDate: "16.04.1992 (31 год)",
+      startDate: "2022 - 2026 (2 курс)",
+    },
+    {
+      fio: "Александров Александр Александрович",
+      faculty: "2Б",
       birthDate: "16.04.1992 (31 год)",
       startDate: "2022 - 2026 (2 курс)",
     },
@@ -47,7 +66,7 @@
     //
 
     // Table
-    let { studentsTable, updateTable } = createTable();
+    let { studentsTable, sorters, updateTable } = createTable();
     updateTable(STUDENTS);
     //
 
@@ -132,50 +151,63 @@
     );
     //
 
-    const getFilteredStudents = (students, value, type) => {
-      let filtered = [];
+    const getSortedStudents = (students, sortCode) => {
+      let sorted = [];
 
-      if (type === FILTER_TYPES.fio && value) {
-        filtered = students.filter(({ fio }) =>
+      if (sortCode === SORT_CODES.fioSort) {
+        sorted = students.sort((a, b) => sortString(a.fio, b.fio));
+      }
+
+      if (sortCode === SORT_CODES.facSort) {
+        sorted = students.sort((a, b) => sortString(a.faculty, b.faculty));
+      }
+
+      updateTable(sorted);
+    };
+
+    const getFilters = (students, value, type) => {
+      let edited = [...students];
+
+      if (type === FILTER_TYPES.fio) {
+        edited = students.filter(({ fio }) =>
           fio.toLowerCase().includes(value.toLowerCase())
         );
       }
 
-      if (type === FILTER_TYPES.faculty && value) {
-        filtered = students.filter(({ faculty }) => faculty === value);
+      if (type === FILTER_TYPES.faculty) {
+        edited = students.filter(({ faculty }) => faculty === value);
       }
 
-      if (type === FILTER_TYPES.faculty && value) {
-        filtered = students.filter(({ faculty }) => faculty === value);
-      }
-
-      if (type === FILTER_TYPES.start && value) {
-        filtered = students.filter(
+      if (type === FILTER_TYPES.start) {
+        edited = students.filter(
           ({ startDate }) => startDate.split(" ")?.[0] === value
         );
       }
 
-      if (type === FILTER_TYPES.end && value) {
-        filtered = students.filter(
+      if (type === FILTER_TYPES.end) {
+        edited = students.filter(
           ({ startDate }) => startDate.split(" ")?.[2] === value
         );
       }
 
-      updateTable(filtered);
+      updateTable(edited);
 
       if (!value) {
         updateTable(STUDENTS);
       }
     };
 
+    //Sorters events
+    sorters.forEach((sorter) =>
+      sorter.addEventListener("click", () =>
+        getFilters(STUDENTS, null, sorter.dataset.sortCode)
+      )
+    );
+
     //Filters events
     filterInputs.forEach((filter) =>
       filter.addEventListener("input", () => {
-        getFilteredStudents(
-          STUDENTS,
-          filter.value.trim(),
-          filter.dataset.filterType
-        );
+        getFilters(STUDENTS, filter.value.trim(), filter.dataset.filterType);
       })
     );
     //
