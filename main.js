@@ -16,6 +16,11 @@
     yearsSort: "yearsSort",
   };
 
+  const CURRENT_FILTERS = {
+    sort: null,
+    filters: [],
+  };
+
   const STUDENTS = [
     {
       fio: "Иванов Иван Иванович",
@@ -168,33 +173,56 @@
     const getFilters = (students, value, type) => {
       let edited = [...students];
 
-      if (type === FILTER_TYPES.fio) {
-        edited = students.filter(({ fio }) =>
-          fio.toLowerCase().includes(value.toLowerCase())
-        );
+      if (Object.keys(SORT_CODES).includes(type)) {
+        CURRENT_FILTERS.sort = type;
       }
 
-      if (type === FILTER_TYPES.faculty) {
-        edited = students.filter(({ faculty }) => faculty === value);
+      if (Object.keys(FILTER_TYPES).includes(type)) {
+        let filters = [...CURRENT_FILTERS.filters];
+
+        if (filters.find((item) => item.code === type)) {
+          filters = filters.filter((el) => el.code !== type);
+          filters.push({ code: type, value });
+        } else {
+          filters.push({ code: type, value });
+        }
+
+        if (!value) {
+          filters = filters.filter((el) => el.code !== type);
+        }
+
+        CURRENT_FILTERS.filters = filters;
       }
 
-      if (type === FILTER_TYPES.start) {
-        edited = students.filter(
-          ({ startDate }) => startDate.split(" ")?.[0] === value
-        );
-      }
+      console.log(CURRENT_FILTERS);
 
-      if (type === FILTER_TYPES.end) {
-        edited = students.filter(
-          ({ startDate }) => startDate.split(" ")?.[2] === value
-        );
-      }
+      // if (type === FILTER_TYPES.fio) {
+      //   edited = students.filter(({ fio }) =>
+      //     fio.toLowerCase().includes(value.toLowerCase())
+      //   );
+      // }
+
+      // if (type === FILTER_TYPES.faculty) {
+      //   edited = students.filter(({ faculty }) => faculty === value);
+      // }
+
+      // if (type === FILTER_TYPES.start) {
+      //   edited = students.filter(
+      //     ({ startDate }) => startDate.split(" ")?.[0] === value
+      //   );
+      // }
+
+      // if (type === FILTER_TYPES.end) {
+      //   edited = students.filter(
+      //     ({ startDate }) => startDate.split(" ")?.[2] === value
+      //   );
+      // }
 
       updateTable(edited);
 
-      if (!value) {
-        updateTable(STUDENTS);
-      }
+      // if (!value) {
+      //   updateTable(STUDENTS);
+      // }
     };
 
     //Sorters events
