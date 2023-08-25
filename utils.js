@@ -60,3 +60,47 @@ const sortString = (a, b) => {
 
   return ("" + preparedA).localeCompare(preparedB);
 };
+
+const sortDate = (a, b) => {
+  const firtsDate = a.split(" ")[0].split(".");
+  const secondDate = b.split(" ")[0].split(".");
+
+  const aTimestamp = Date.parse(
+    `${firtsDate[1]}/${firtsDate[0]}/${firtsDate[2]}`
+  );
+  const bTimestamp = Date.parse(
+    `${secondDate[1]}/${secondDate[0]}/${secondDate[2]}`
+  );
+
+  return ("" + aTimestamp).localeCompare(bTimestamp);
+};
+
+const getFilteredStudents = (students, filters, types) => {
+  let filtered = [...students];
+
+  filters.map(({ code, value }) => {
+    if (code === types.fio) {
+      filtered = students.filter(({ fio }) =>
+        fio.toLowerCase().includes(value.toLowerCase())
+      );
+    }
+
+    if (code === types.faculty) {
+      filtered = students.filter(({ faculty }) => faculty === value);
+    }
+
+    if (code === types.start) {
+      filtered = students.filter(
+        ({ startDate }) => startDate.split(" ")?.[0] === value
+      );
+    }
+
+    if (code === types.end) {
+      filtered = students.filter(
+        ({ startDate }) => startDate.split(" ")?.[2] === value
+      );
+    }
+  });
+
+  return filtered;
+};

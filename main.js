@@ -157,7 +157,7 @@
     //
 
     const getSortedStudents = (students, sortCode) => {
-      let sorted = [];
+      let sorted = [...students];
 
       if (sortCode === SORT_CODES.fioSort) {
         sorted = students.sort((a, b) => sortString(a.fio, b.fio));
@@ -167,7 +167,15 @@
         sorted = students.sort((a, b) => sortString(a.faculty, b.faculty));
       }
 
-      updateTable(sorted);
+      if (sortCode === SORT_CODES.yearsSort) {
+        sorted = students.sort((a, b) => sortString(a.startDate, b.startDate));
+      }
+
+      if (sortCode === SORT_CODES.birthSort) {
+        sorted = students.sort((a, b) => sortDate(a.birthDate, b.birthDate));
+      }
+
+      return sorted;
     };
 
     const getFilters = (students, value, type) => {
@@ -194,35 +202,12 @@
         CURRENT_FILTERS.filters = filters;
       }
 
-      console.log(CURRENT_FILTERS);
+      edited = [
+        ...getFilteredStudents(edited, CURRENT_FILTERS.filters, FILTER_TYPES),
+      ];
 
-      // if (type === FILTER_TYPES.fio) {
-      //   edited = students.filter(({ fio }) =>
-      //     fio.toLowerCase().includes(value.toLowerCase())
-      //   );
-      // }
-
-      // if (type === FILTER_TYPES.faculty) {
-      //   edited = students.filter(({ faculty }) => faculty === value);
-      // }
-
-      // if (type === FILTER_TYPES.start) {
-      //   edited = students.filter(
-      //     ({ startDate }) => startDate.split(" ")?.[0] === value
-      //   );
-      // }
-
-      // if (type === FILTER_TYPES.end) {
-      //   edited = students.filter(
-      //     ({ startDate }) => startDate.split(" ")?.[2] === value
-      //   );
-      // }
-
+      edited = [...getSortedStudents(edited, CURRENT_FILTERS.sort)];
       updateTable(edited);
-
-      // if (!value) {
-      //   updateTable(STUDENTS);
-      // }
     };
 
     //Sorters events
