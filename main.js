@@ -21,38 +21,7 @@
     filters: [],
   };
 
-  const STUDENTS = [
-    {
-      fio: "Иванов Иван Иванович",
-      faculty: "3",
-      birthDate: "16.04.1990 (33 года)",
-      startDate: "2008 - 2012 (закончил)",
-    },
-    {
-      fio: "Петров Петр Петрович",
-      faculty: "2",
-      birthDate: "16.04.1991 (32 года)",
-      startDate: "2013 - 2017 (закончил)",
-    },
-    {
-      fio: "Сидоров Сидр Сидорович",
-      faculty: "1",
-      birthDate: "16.04.1992 (31 год)",
-      startDate: "2022 - 2026 (2 курс)",
-    },
-    {
-      fio: "Тестовый Тест Тестович",
-      faculty: "2а",
-      birthDate: "16.04.1992 (31 год)",
-      startDate: "2022 - 2026 (2 курс)",
-    },
-    {
-      fio: "Александров Александр Александрович",
-      faculty: "2Б",
-      birthDate: "16.04.1992 (31 год)",
-      startDate: "2022 - 2026 (2 курс)",
-    },
-  ];
+  const STUDENTS = [];
 
   const container = document.createElement("div");
   container.classList.add("container", "trans", "trans-active");
